@@ -128,7 +128,7 @@ define createrepo (
   $cron_minute          = '*/10',
   $cron_hour            = '*',
   $cron_weekday         = '*',
-  $changelog_limit      = 5,
+  Integer $changelog_limit = 5,
   $checksum_type        = undef,
   $update_file_path     = undef,
   $suppress_cron_stdout = false,
@@ -150,10 +150,6 @@ define createrepo (
   else {
     $adjusted_name = regsubst($name, '/', '-', 'G')
     $real_update_file_path = "/usr/local/bin/createrepo-update-${adjusted_name}"
-  }
-
-  unless is_integer($timeout) {
-    fail('timeout is not an integer')
   }
 
   if $manage_repo_dirs {
@@ -193,11 +189,7 @@ define createrepo (
 
   case $::osfamily {
     'RedHat':{
-      if is_integer($changelog_limit) {
-        $_arg_changelog = " --changelog-limit ${changelog_limit}"
-      } else {
-        $_arg_changelog = ''
-      }
+      $_arg_changelog = " --changelog-limit ${changelog_limit}"
 
       if $checksum_type {
         $_arg_checksum = " --checksum ${checksum_type}"
