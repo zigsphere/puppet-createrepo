@@ -187,7 +187,7 @@ define createrepo (
     Package['yum-utils'] -> File[$real_update_file_path]
   }
 
-  case $::osfamily {
+  case $facts['os']['family'] {
     'RedHat':{
       $_arg_changelog = " --changelog-limit ${changelog_limit}"
 
